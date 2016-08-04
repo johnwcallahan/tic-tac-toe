@@ -1,0 +1,99 @@
+body {
+	background-color: #E6E6E6;
+	width: 100%;
+}
+
+.modal-content {
+	height: 100px;
+	width: 250px;
+	margin: 265px auto 0 auto;
+	background-color: #E5E5E5;
+}
+
+#selection {
+	margin-top: 5px;
+	font-size: 40px;
+}
+
+.selection {
+	background-color: #E5E5E5;
+	color: #00007A;
+}
+
+.selection:hover {
+	opacity: 0.5;
+	color: #00007A;
+}
+
+#game-board {
+	width: 450px;
+	height: 450px;
+	margin: 100px auto 0 auto;
+}
+
+.square {
+	height: 150px;
+	border: solid;
+	text-align: center;
+	border-color: #414141;
+	font-size: 80px;
+}
+
+.icon {
+	padding-top: 30px;
+	padding-bottom: 30px; 
+	color: #00007A;
+}
+
+.hover {
+	opacity: 0.5;
+}
+
+#S0 {
+	border-top: none;
+	border-left: none;
+}
+
+#S1 {
+	border-top: none;
+}
+
+#S2 {
+	border-top: none;
+	border-right: none;
+}
+
+#S3 {
+	border-left: none;
+}
+
+#S5 {
+	border-right: none;
+}
+
+#S6 {
+	border-left: none;
+	border-bottom: none;
+}
+
+#S7 {
+	border-bottom: none;
+}
+
+#S8 {
+	border-bottom: none;
+	border-right: none;
+}
+
+@media screen and (max-width: 500px) {
+    #game-board {
+        transform: scale(0.6);
+        margin: 0 0 0 -30px;
+    }
+    .modal-content {
+        transform: scale(0.6);
+        position: absolute;
+        margin: 160px 0 0 60px;
+
+    }
+}
