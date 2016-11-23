@@ -5,7 +5,7 @@ function GameBoard(size, startingBoard) {
     this.size = size > 2 ? size : 2; //Minimum size is 2
     this.len = size * size;
 
-    //Initialize empty board if startingBoard paramater isn't given
+    //Initialize empty board if startingBoard parameter isn't given
     this.board = startingBoard || this._initBoard();
 
     //Initialize empty state object
@@ -156,6 +156,7 @@ AI.prototype._getRandomEmptySpace = function(board) {
     return emptySpaces[Math.floor(Math.random() * emptySpaces.length)];
 };
 
+//Returns space needed for avatar to be in winning formation on board
 AI.prototype._winningSpace = function(board, avatar) {
     var rank = board.getAlmostWinRanks(avatar)[0],
         b = board.getBoard(),
@@ -205,7 +206,8 @@ AI.prototype._alphaBetaMinimax = function(board, activeTurn, alpha, beta, depth)
         return this._score(board);
     }
 
-    var moves = board.getEmptySpaces(),
+    //Get all possible moves
+    var moves = board.getEmptySpaces(), 
         boardClone, possibleBoard, i, currentScore;
 
     if (activeTurn === this) {
@@ -214,8 +216,8 @@ AI.prototype._alphaBetaMinimax = function(board, activeTurn, alpha, beta, depth)
             boardClone[moves[i]] = activeTurn.avatar;
             possibleBoard = new GameBoard(board.size, boardClone);
             currentScore = this._alphaBetaMinimax(possibleBoard,
-                this.opponent, alpha,
-                beta, depth);
+                                                  this.opponent, alpha,
+                                                  beta, depth);
 
             if (currentScore > alpha) {
                 alpha = currentScore;
@@ -232,8 +234,8 @@ AI.prototype._alphaBetaMinimax = function(board, activeTurn, alpha, beta, depth)
             boardClone[moves[i]] = activeTurn.avatar;
             possibleBoard = new GameBoard(board.size, boardClone);
             currentScore = this._alphaBetaMinimax(possibleBoard,
-                this, alpha,
-                beta, depth);
+                                                  this, alpha,
+                                                  beta, depth);
             if (currentScore < beta)
                 beta = currentScore;
             if (beta <= alpha)
@@ -262,11 +264,13 @@ AI.prototype.getNextMove = function(board) {
     var oppAlmostWin = board.getAlmostWinRanks(this.opponent.avatar);
 
 
-    //Global rule - if AI has winning move, it takes it
+    //Global rule - if AI has winning move, take it
     if (board.getAlmostWinRanks(this.avatar))
         return this._winningSpace(board, this.avatar);
 
     if (this.level === 1) {
+
+        //If opponent has a chance to win, 50/50 chance of countering it
         if (oppAlmostWin) {
             if (Math.random() >= 0.5)
                 return this._winningSpace(board, this.opponent.avatar);
@@ -276,6 +280,8 @@ AI.prototype.getNextMove = function(board) {
             return random;
 
     } else if (this.level === 2) {
+
+        //If opponent has a chance to win, counter it
         if (oppAlmostWin)
             return this._winningSpace(board, this.opponent.avatar);
         else
@@ -283,6 +289,8 @@ AI.prototype.getNextMove = function(board) {
 
     } else if (this.level === 3) {
 
+        /* Minimax is too slow for 4x4 and 5x5 under 5 and 9 moves, so make 
+        random moves and always counter if opponent has potential win */
         if ((board.size === 4 && this._numMoves < 5) ||
             (board.size === 5 && this._numMoves < 9)) {
             if (oppAlmostWin)
@@ -314,11 +322,11 @@ TicTacToe.prototype.humanMove = function(space) {
     this.board.markSpace(space, this.human.avatar);
     this.DOM.render(this.board);
 
-    //Wait 250ms before next action so gameplay feels natural
+    //Wait 200ms before next action so game play feels natural
     var self = this;
     setTimeout(function() {
         self.doNextAction();
-    }, 250);
+    }, 200);
 
 };
 
@@ -332,18 +340,19 @@ TicTacToe.prototype.AIMove = function() {
 //Determines and performs next action
 TicTacToe.prototype.doNextAction = function() {
     var winningRanks;
+    
     //End the game and render win if human won
     if (this.board.didAvatarWin(this.human.avatar)) {
         this.isGameOver = true;
         winningRanks = this.board.getWinningRanks(this.human.avatar);
         this.DOM.renderWin(winningRanks);
 
-        //End the game and render draw if no one won
+    //End the game and render draw if no one won
     } else if (this.board.isEverySpaceOccupied()) {
         this.isGameOver = true;
         this.DOM.renderDraw();
 
-        //Otherwise AI makes a move, then check for AI win or draw
+    //Otherwise AI makes a move, then check for AI win or draw
     } else {
         this.AIMove();
         if (this.board.didAvatarWin(this.AI.avatar)) {
@@ -371,7 +380,7 @@ var DOMMethods = (function() {
 
     //Creates HTML board and writes it to the DOM
     var createBoard = function(size) {
-        size = size <= 8 ? size : 8; //Max board size is 8
+        size = size <= 5 ? size : 5; //Max board size is 8
 
         var i, j, row, space, spaceCount = 0;
 
@@ -390,8 +399,7 @@ var DOMMethods = (function() {
             for (j = 0; j < size; j++) {
                 space = $("<a/>", {
                     id: "space" + spaceCount,
-                    onclick: "function(){}",
-                    class: "space clickable col" + j + " row" + i,
+                    class: "space col" + j + " row" + i,
                     "data-space": spaceCount
                 });
                 $("#row" + i).append(space);
@@ -399,12 +407,12 @@ var DOMMethods = (function() {
             }
         }
 
-        //Find main diagnol and add appropriate class
+        //Find main diagonal and add appropriate class
         for (j = 0; j < size * size; j += size + 1) {
             $("#space" + j).addClass("mainDiag");
         }
 
-        //Find anti diagnol and add appropriate class
+        //Find anti diagonal and add appropriate class
         for (j = size - 1; j < size * size - 1; j += size - 1) {
             $("#space" + j).addClass("antiDiag");
         }
@@ -478,7 +486,7 @@ var DOMMethods = (function() {
 
 
 //==============================================================================
-//Page iteraction
+//Page interaction
 //==============================================================================
 $(document).ready(function() {
 
@@ -487,6 +495,7 @@ $(document).ready(function() {
         $('#modal').modal('show');
     });
 
+    //Get previous settings from session storage if available 
     if (window.sessionStorage.getItem("humanAvatar")) {
         var sessionHumanAvatar = window.sessionStorage.getItem("humanAvatar");
         $("button[data-avatar='" + sessionHumanAvatar + "']")
@@ -501,7 +510,7 @@ $(document).ready(function() {
         $("label[data-level='" + sessionLevel + "']").addClass("active");
         $("input:not([data-level='" + sessionLevel + "'])")
             .removeAttr("checked");
-        $("lavel:not([data-level='" + sessionLevel + "'])")
+        $("label:not([data-level='" + sessionLevel + "'])")
             .removeClass("active");
     } else {
         $("input[data-level='2']").attr("checked", true);
@@ -513,9 +522,10 @@ $(document).ready(function() {
         $("#size").val(sessionSize);
         DOMMethods.createBoard(sessionSize);
     } else {
+        //Start with board of size three by default
         DOMMethods.createBoard(3);
     }
-  
+
     //Update board size on input change
     $("#size").change(function(event) {
         DOMMethods.createBoard(event.target.value);
@@ -541,6 +551,7 @@ $(document).ready(function() {
         var size = parseInt($("#size").val());
         $("#modal").modal("toggle");
 
+        //Store settings in session storage
         if (window.sessionStorage !== undefined) {
             window.sessionStorage.setItem("humanAvatar", humanAvatar);
             window.sessionStorage.setItem("computerAvatar", computerAvatar);
@@ -552,9 +563,9 @@ $(document).ready(function() {
     });
 
 
-    //==============================================================================
+    //==========================================================================
     //GAME
-    //==============================================================================
+    //==========================================================================
     //Controls main flow of game
     function playGame(humanAvatar, computerAvatar, AIlevel, size) {
 
@@ -567,10 +578,5 @@ $(document).ready(function() {
             var space = event.target.getAttribute("data-space");
             game.humanMove(space);
         });
-
-        $(".space").bind("touchstart", function(event) {
-            var space = event.target.getAttribute("data-space");
-            game.humanMove(space);
-        })
     }
 });
