@@ -3,42 +3,71 @@
 <head>
 	<title>Tic-Tac-Toe</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="styles.css">
+	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="script.js"></script>
+	<script type="text/javascript" src="finalscript.js"></script>	
 </head>
 <body>
-	<div class="modal fade" role="dialog" id="modal">
-		<div class="modal-dialog modal-sm">
-			<div class="modal-content">
-				<div class="modal-body">
-					<div class="row" id="selection">
-						<button type="button" class="col-xs-3 col-xs-offset-3 btn fa fa-times selection" id="selection-x"></button>
-						<button type="button" class="col-xs-3 btn fa fa-circle-o selection" id="selection-o"></button>
+
+<div class="modal fade" role="dialog" id="modal" data-backdrop="static">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-3 col-xs-offset-3">
+						<button type="button" class="btn avatar-selection selected-avatar" 
+										id="select-x" data-avatar="X"><i class="fa fa-times"></i>
+						</button>					
 					</div>
-				</div>			
-			</div>
+					<div class="col-xs-3">
+						<button type="button" class="btn avatar-selection" 
+										id="select-o" data-avatar="O"> <i class="fa fa-circle-o"></i>
+						</button>						
+					</div>
+				</div>	
+				<div class="row">
+					<div class="col-xs-12" style="margin: 10px 0 0 12px;">
+						<div class="btn-group" data-toggle="buttons" id="difficulty-selection">
+							<label class="btn btn-default" data-level="1">
+								<input type="radio" name="difficulty" data-level="1">Easy
+							</label>
+							<label class="btn btn-default" data-level="2">
+								<input type="radio" name="difficulty" data-level="2">Hard
+							</label>
+							<label id="unbeatable-label" class="btn btn-default" data-level="3">
+								<input type="radio" 
+											 class="disabled" 
+											 name="difficulty" 
+											 id="unbeatable-button" 
+											 data-level="3">Extreme
+							</label>
+						</div>	
+					</div>	
+				</div>
+				<div class="row" style="margin-top: 10px">
+					<div class="col-xs-12">
+						<label for="size">Size</label>
+						<input type="range" min="3" max="5" value="3" id="size">
+					</div>
+				</div>
+				<div clas="row">
+					<div class="col-xs-12">
+						<button type="button" class="btn btn-success btn-block" id="play">
+							Play
+						</button>
+					</div>
+				</div>
+			</div>			
 		</div>
 	</div>
-	<div class="container-fluid" id="game-board">
-		<div class="row">
-			<div class="col-xs-4 square" id="S0"></div>
-			<div class="col-xs-4 square" id="S1"></div>
-			<div class="col-xs-4 square" id="S2"></div>
-		</div>
-		<div class="row">
-			<div class="col-xs-4 square" id="S3"></div>
-			<div class="col-xs-4 square" id="S4"></i></div>
-			<div class="col-xs-4 square" id="S5"></div>
-		</div>
-		<div class="row">
-			<div class="col-xs-4 square" id="S6"></div>
-			<div class="col-xs-4 square" id="S7"></div>
-			<div class="col-xs-4 square" id="S8"></div>
-		</div>	
-	</div>
+</div>
+
+<div class="container-fluid" id="game"></div>
+
 </body>
-</html>
+</html>s
