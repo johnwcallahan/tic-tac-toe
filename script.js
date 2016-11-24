@@ -207,7 +207,7 @@ AI.prototype._alphaBetaMinimax = function(board, activeTurn, alpha, beta, depth)
     }
 
     //Get all possible moves
-    var moves = board.getEmptySpaces(), 
+    var moves = board.getEmptySpaces(),
         boardClone, possibleBoard, i, currentScore;
 
     if (activeTurn === this) {
@@ -216,8 +216,8 @@ AI.prototype._alphaBetaMinimax = function(board, activeTurn, alpha, beta, depth)
             boardClone[moves[i]] = activeTurn.avatar;
             possibleBoard = new GameBoard(board.size, boardClone);
             currentScore = this._alphaBetaMinimax(possibleBoard,
-                                                  this.opponent, alpha,
-                                                  beta, depth);
+                this.opponent, alpha,
+                beta, depth);
 
             if (currentScore > alpha) {
                 alpha = currentScore;
@@ -234,8 +234,8 @@ AI.prototype._alphaBetaMinimax = function(board, activeTurn, alpha, beta, depth)
             boardClone[moves[i]] = activeTurn.avatar;
             possibleBoard = new GameBoard(board.size, boardClone);
             currentScore = this._alphaBetaMinimax(possibleBoard,
-                                                  this, alpha,
-                                                  beta, depth);
+                this, alpha,
+                beta, depth);
             if (currentScore < beta)
                 beta = currentScore;
             if (beta <= alpha)
@@ -340,19 +340,19 @@ TicTacToe.prototype.AIMove = function() {
 //Determines and performs next action
 TicTacToe.prototype.doNextAction = function() {
     var winningRanks;
-    
+
     //End the game and render win if human won
     if (this.board.didAvatarWin(this.human.avatar)) {
         this.isGameOver = true;
         winningRanks = this.board.getWinningRanks(this.human.avatar);
         this.DOM.renderWin(winningRanks);
 
-    //End the game and render draw if no one won
+        //End the game and render draw if no one won
     } else if (this.board.isEverySpaceOccupied()) {
         this.isGameOver = true;
         this.DOM.renderDraw();
 
-    //Otherwise AI makes a move, then check for AI win or draw
+        //Otherwise AI makes a move, then check for AI win or draw
     } else {
         this.AIMove();
         if (this.board.didAvatarWin(this.AI.avatar)) {
@@ -433,7 +433,14 @@ var DOMMethods = (function() {
     };
 
     var _reset = function() {
-        location.reload();
+        if (window.sessionStorage.getItem("size")) {
+            var sessionSize = window.sessionStorage.getItem("size");
+            $("#size").val(sessionSize);
+            DOMMethods.createBoard(sessionSize);
+        } else {
+            DOMMethods.createBoard(3);
+        }
+        $("#modal").modal("show");
     };
 
     //Updates DOM with contents of board
