@@ -433,7 +433,14 @@ var DOMMethods = (function() {
     };
 
     var _reset = function() {
-        window.location.reload();
+      if (window.sessionStorage.getItem("size")) {
+          var sessionSize = window.sessionStorage.getItem("size");
+          $("#size").val(sessionSize);
+          DOMMethods.createBoard(sessionSize);
+      } else {
+          DOMMethods.createBoard(3);
+      }
+      $("#modal").modal("show");
     };
 
     //Updates DOM with contents of board
