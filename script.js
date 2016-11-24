@@ -347,12 +347,12 @@ TicTacToe.prototype.doNextAction = function() {
         winningRanks = this.board.getWinningRanks(this.human.avatar);
         this.DOM.renderWin(winningRanks);
 
-        //End the game and render draw if no one won
+    //End the game and render draw if no one won
     } else if (this.board.isEverySpaceOccupied()) {
         this.isGameOver = true;
         this.DOM.renderDraw();
 
-        //Otherwise AI makes a move, then check for AI win or draw
+    //Otherwise AI makes a move, then check for AI win or draw
     } else {
         this.AIMove();
         if (this.board.didAvatarWin(this.AI.avatar)) {
@@ -380,7 +380,7 @@ var DOMMethods = (function() {
 
     //Creates HTML board and writes it to the DOM
     var createBoard = function(size) {
-        size = size <= 5 ? size : 5; //Max board size is 8
+        size = size <= 5 ? size : 5; //Max board size is 5
 
         var i, j, row, space, spaceCount = 0;
 
@@ -432,6 +432,7 @@ var DOMMethods = (function() {
         });
     };
 
+    //Reloads game
     var _reset = function() {
         if (window.sessionStorage.getItem("size")) {
             var sessionSize = window.sessionStorage.getItem("size");
