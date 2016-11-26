@@ -4,9 +4,9 @@ Play against a multi-level AI on a standard 3x3 board, or challenge yourself wit
 
 Built with Javascript, jQuery, HTML, and CSS. 
 
-*Live demo: http://codepen.io/lvb_111/full/GjKPWq/*
+*Live demo on [CodePen](http://codepen.io/lvb_111/full/GjKPWq/)*
 
-
+[![tic-tac-toe.png](https://s18.postimg.org/qvcdsajgp/tic_tac_toe.png)](https://postimg.org/image/e3y7ls9ol/)
 
 
 
