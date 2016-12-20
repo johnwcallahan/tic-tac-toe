@@ -16,21 +16,21 @@ body {
   margin-top: 5px;
   padding: 0;
   opacity: 0.3;
-  color: #00007A;
+  color: #2484F4;
   background-color: #E5E5E5;
 }
 
 .avatar-selection:hover {
   opacity: 1;
-  color: #00007A;
+  color: #2484F4;
 }
 .avatar-selection:focus {
-  color: #00007A;
+  color: #2484F4;
 }
 
 .selected-avatar {
   opacity: 1;
-  color: #00007A;
+  color: #2484F4;
 }
 
 #difficulty-selection {
@@ -53,12 +53,12 @@ body {
   display: inline-block;
   text-align: center;
   vertical-align: top;
-  border: solid 3px;
-  border-color: #414141;
+  border: solid 1px;
+  border-color: #757474;
 }
 
 .avatar {
-  color: #00007A;
+  color: #2484F4;
 }
 
 .top {
